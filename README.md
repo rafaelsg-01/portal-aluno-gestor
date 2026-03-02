@@ -12,7 +12,8 @@ Desenvolvido para demonstrar competências em **Full Stack Development** utiliza
 
 ### Landing Page
 A porta de entrada do sistema, onde o usuário escolhe seu perfil de acesso.
-![Landing Page](https://placehold.co/800x400?text=Print+da+Landing+Page)
+<img width="800" height="auto" alt="image" src="https://github.com/user-attachments/assets/c04e4cc3-bd5b-42d6-8135-c2beaaffc2ed" />
+
 *[Print da rota "/" - Landing Page]*
 
 ---
@@ -25,7 +26,8 @@ Focado na experiência de aprendizado e consumo de conteúdo.
 - **Notificações em Tempo Real**: Recebimento instantâneo de comunicados enviados pela gestão (via WebSocket).
 - **Consumo de Conteúdo**: Listagem dinâmica de materiais cadastrados pelos professores/gestores.
 
-![Portal do Aluno](https://placehold.co/800x400?text=Print+do+Portal+do+Aluno)
+<img width="800" height="auto" alt="image" src="https://github.com/user-attachments/assets/5ccd335c-36f4-48d6-9200-84fcb89b3b31" />
+
 *[Print da rota "/client" - Dashboard do Aluno]*
 
 ### 👨‍💼 Painel do Gestor
@@ -34,7 +36,8 @@ Focado em administração e comunicação.
 - **Sistema de Broadcast**: Envio de notificações push para todos os alunos conectados simultaneamente.
 - **Histórico de Mensagens**: Visualização de todas as comunicações enviadas.
 
-![Painel do Gestor](https://placehold.co/800x400?text=Print+do+Painel+do+Gestor)
+<img width="800" height="auto" alt="image" src="https://github.com/user-attachments/assets/de745cb2-ae58-4eff-ae5d-5ddc9bef8e71" />
+
 *[Print da rota "/admin" - Dashboard do Gestor]*
 
 ---
@@ -47,7 +50,7 @@ O sistema possui fluxos de autenticação independentes para garantir a seguran�
 
 | Login Aluno | Login Gestor |
 |-------------|--------------|
-| ![Login Aluno](https://placehold.co/400x300?text=Login+Aluno) | ![Login Gestor](https://placehold.co/400x300?text=Login+Gestor) |
+| <img width="400" height="auto" alt="image" src="https://github.com/user-attachments/assets/8c7ec18a-e421-41a2-a29b-ed1a88580086" /> | <img width="400" height="auto" alt="image" src="https://github.com/user-attachments/assets/09307281-187a-4cb7-a1e6-b5e0a5a873d3" /> |
 | *[Print da rota "/login-client"]* | *[Print da rota "/login-admin"]* |
 
 ---
