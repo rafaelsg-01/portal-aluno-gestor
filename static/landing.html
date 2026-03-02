@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Institucional | Bem-vindo</title>
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #64748b;
+            --bg: #f3f4f6;
+            --surface: #ffffff;
+            --text: #1f2937;
+            --text-light: #6b7280;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text);
+            padding: 2rem;
+        }
+
+        .main-container {
+            max-width: 900px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .header {
+            margin-bottom: 3rem;
+        }
+
+        .header i {
+            font-size: 3.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.025em;
+        }
+
+        .header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .roles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        .role-card {
+            background: var(--surface);
+            padding: 2.5rem 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            color: inherit;
+            border: 2px solid transparent;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .role-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: var(--primary);
+        }
+
+        .card-icon-bg {
+            width: 80px;
+            height: 80px;
+            background-color: #eff6ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            transition: background-color 0.3s;
+        }
+
+        .role-card:hover .card-icon-bg {
+            background-color: var(--primary);
+        }
+
+        .role-card i {
+            font-size: 2rem;
+            color: var(--primary);
+            transition: color 0.3s;
+        }
+
+        .role-card:hover i {
+            color: white;
+        }
+
+        .role-card h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .role-card p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-action {
+            margin-top: auto;
+            color: var(--primary);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-action i {
+            font-size: 1rem;
+            color: var(--primary);
+        }
+
+        .role-card:hover .card-action i {
+             /* Keep arrow blue on hover or make it follow theme? Let's keep it blue for contrast against white card */
+             color: var(--primary);
+        }
+
+        @media (max-width: 640px) {
+            .header h1 { font-size: 2rem; }
+            .roles-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container animate__animated animate__fadeIn">
+        <div class="header">
+            <div class="animate__animated animate__bounceIn">
+                <i class="fas fa-university"></i>
+            </div>
+            <h1>Portal Institucional</h1>
+            <p>Selecione seu perfil abaixo para acessar o ambiente acadêmico.</p>
+        </div>
+
+        <div class="roles-grid">
+            <!-- Student Option -->
+            <a href="/login-client" class="role-card animate__animated animate__fadeInUp" style="animation-delay: 0.1s;">
+                <div class="card-icon-bg">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <h2>Sou Aluno</h2>
+                <p>Acesse suas notas, atividades, materiais de aula e receba comunicados importantes.</p>
+                <div class="card-action">
+                    Acessar Portal do Aluno <i class="fas fa-arrow-right"></i>
+                </div>
+            </a>
+
+            <!-- Admin Option -->
+            <a href="/login-admin" class="role-card animate__animated animate__fadeInUp" style="animation-delay: 0.2s;">
+                <div class="card-icon-bg">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+                <h2>Sou Gestor</h2>
+                <p>Gerencie conteúdos, envie notificações e acompanhe o engajamento dos alunos.</p>
+                <div class="card-action">
+                    Acessar Painel Administrativo <i class="fas fa-arrow-right"></i>
+                </div>
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>

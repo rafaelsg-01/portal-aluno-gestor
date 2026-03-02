@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro Aluno</title>
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --surface: #ffffff;
+            --bg: #f3f4f6;
+            --text: #1f2937;
+            --text-light: #6b7280;
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            background: linear-gradient(135deg, #f3f4f6 0%, #dbeafe 100%);
+            color: var(--text);
+            padding: 1rem;
+        }
+
+        .card { 
+            background: var(--surface); 
+            padding: 2.5rem; 
+            border-radius: 0.75rem; 
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); 
+            width: 100%;
+            max-width: 400px; 
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--primary);
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            transition: color 0.3s;
+            width: 20px;
+            text-align: center;
+        }
+
+        input { 
+            width: 100%; 
+            padding: 0.75rem 1rem 0.75rem 2.75rem; 
+            border: 1px solid #e5e7eb; 
+            border-radius: 0.5rem; 
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            outline: none;
+            background: #f9fafb;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            background: white;
+        }
+
+        input:focus + i {
+            color: var(--primary);
+        }
+
+        button { 
+            width: 100%; 
+            padding: 0.75rem; 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            border-radius: 0.5rem; 
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer; 
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        button:hover { 
+            background: var(--primary-dark); 
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+        }
+        
+        button:active { transform: translateY(0); }
+
+        a { 
+            display: block; 
+            text-align: center; 
+            margin-top: 1.5rem; 
+            color: var(--text-light); 
+            text-decoration: none; 
+            font-size: 0.875rem; 
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: var(--primary);
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="card animate__animated animate__fadeInUp">
+        <h2>Cadastro Aluno</h2>
+        
+        <div class="input-group">
+            <i class="fas fa-user-circle"></i>
+            <input type="text" id="name" placeholder="Nome Completo">
+        </div>
+        
+        <div class="input-group">
+            <i class="fas fa-book"></i>
+            <input type="text" id="course" placeholder="Curso">
+        </div>
+        
+        <div class="input-group">
+            <i class="fas fa-at"></i>
+            <input type="text" id="username" placeholder="Usuário (Login)">
+        </div>
+        
+        <div class="input-group">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="password" placeholder="Senha">
+        </div>
+        
+        <div class="input-group">
+            <i class="fas fa-check-circle"></i>
+            <input type="password" id="confirmPassword" placeholder="Confirmar Senha">
+        </div>
+
+        <button onclick="register()">
+            <span>Cadastrar</span>
+            <i class="fas fa-user-plus"></i>
+        </button>
+        
+        <a href="/login-client">Já possui conta? Faça login</a>
+    </div>
+
+    <script>
+        async function register() {
+            const name = document.getElementById('name').value;
+            const course = document.getElementById('course').value;
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            const conf = document.getElementById('confirmPassword').value;
+
+            if (!name || !course || !user || !pass || !conf) return alert("Preencha todos os campos");
+            if (pass !== conf) return alert("Senhas não conferem");
+
+            // Check if user exists
+            const check = await fetch(`/get-kv?key=user:client:${user}`);
+            if (check.status === 200) return alert("Usuário já existe");
+
+            // Save user
+            try {
+                await fetch('/put-kv', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        key: `user:client:${user}`,
+                        value: JSON.stringify({ name, course, password: pass })
+                    })
+                });
+
+                // Auto-login
+                document.cookie = `user=${user}; path=/`;
+                document.cookie = `name=${name}; path=/`;
+                document.cookie = `course=${course}; path=/`;
+                
+                window.location.href = '/client';
+            } catch (e) {
+                console.error(e);
+                alert("Erro ao cadastrar");
+            }
+        }
+    </script>
+</body>
+</html>

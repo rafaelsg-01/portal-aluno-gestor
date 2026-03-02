@@ -1,0 +1,50 @@
+name = "portal-aluno-gestor"
+main = "src/index.ts"
+compatibility_date = "2025-10-11"
+
+# Configuração para tratar CSS como texto
+[[rules]]
+type = "Text"
+globs = ["**/*.css", "**/*.html", "**/*.js"]
+
+[assets]
+directory = "./public"
+binding = "Assets_public"
+
+[observability]
+[observability.logs]
+enabled = true
+head_sampling_rate = 1
+invocation_logs = true
+persist = true
+
+
+# KV Production
+[[env.production.kv_namespaces]]
+binding = "Kv_portalAlunoGestor"
+id = "c2ed8c4f526c488a8ec4fc47c9223eec"
+
+[[env.production.durable_objects.bindings]]
+name = "DurableObject_websocketPortalAlunoGestor"
+class_name = "Class_WebsocketPortalAlunoGestor"
+
+# Migrations Production
+[[env.production.migrations]]
+tag = "v1"
+new_sqlite_classes = ["Class_WebsocketPortalAlunoGestor"]
+
+
+
+# KV dev
+[[env.dev.kv_namespaces]]
+binding = "Kv_portalAlunoGestor"
+id = "c2ed8c4f526c488a8ec4fc47c9223e00"
+
+[[env.dev.durable_objects.bindings]]
+name = "DurableObject_websocketPortalAlunoGestor"
+class_name = "Class_WebsocketPortalAlunoGestor"
+
+# Migrations dev
+[[env.dev.migrations]]
+tag = "v1"
+new_sqlite_classes = ["Class_WebsocketPortalAlunoGestor"]

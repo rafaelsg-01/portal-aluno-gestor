@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal do Aluno</title>
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --bg: #f3f4f6;
+            --surface: #ffffff;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--surface);
+            padding: 0 2rem;
+            height: 70px;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--primary);
+        }
+        
+        .brand i { font-size: 1.4rem; }
+
+        .user-nav {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-info {
+            text-align: right;
+            line-height: 1.2;
+        }
+
+        .user-name { font-weight: 600; font-size: 0.95rem; display: block; }
+        .user-course { font-size: 0.75rem; color: var(--text-light); }
+
+        .btn-logout {
+            background: transparent;
+            color: var(--text-light);
+            border: 1px solid #e5e7eb;
+            padding: 0.5rem 0.8rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn-logout:hover {
+            background-color: var(--bg);
+            color: var(--danger, #ef4444);
+            border-color: var(--danger, #ef4444);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            flex: 1;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            padding-bottom: 5rem; /* Space for FAB */
+        }
+
+        /* Cards */
+        .content-card {
+            background: var(--surface);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s;
+            border-top: 4px solid transparent;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .content-card:hover { transform: translateY(-3px); }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .card-header h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0;
+            color: var(--text);
+        }
+
+        .card-header i { font-size: 1.2rem; }
+
+        /* Lists in Cards */
+        .content-list {
+            list-style: none;
+            flex-grow: 1;
+        }
+
+        .content-item {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f8fafc;
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        
+        .content-item:last-child { border-bottom: none; }
+
+        .item-title {
+            font-weight: 600;
+            color: var(--text);
+            font-size: 0.95rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .item-date {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            font-weight: 400;
+            white-space: nowrap;
+            margin-left: 0.5rem;
+        }
+
+        .item-desc {
+            font-size: 0.875rem;
+            color: var(--text-light);
+            line-height: 1.4;
+        }
+
+        .item-meta {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            margin-top: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .empty-list {
+            text-align: center;
+            color: #9ca3af;
+            font-size: 0.9rem;
+            padding: 1rem 0;
+            font-style: italic;
+        }
+
+        /* Color Themes */
+        .card-orange { border-top-color: #f59e0b; }
+        .card-orange .card-header i { color: #f59e0b; }
+        
+        .card-purple { border-top-color: #8b5cf6; }
+        .card-purple .card-header i { color: #8b5cf6; }
+        
+        .card-green { border-top-color: #10b981; }
+        .card-green .card-header i { color: #10b981; }
+        
+        .card-blue { border-top-color: #3b82f6; }
+        .card-blue .card-header i { color: #3b82f6; }
+
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background-color: var(--primary);
+            color: white;
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 1000;
+        }
+
+        .fab:hover {
+            transform: scale(1.1);
+            background-color: var(--primary-dark);
+            box-shadow: 0 15px 30px -5px rgba(37, 99, 235, 0.5);
+        }
+
+        .fab i { font-size: 1.6rem; }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #ef4444;
+            color: white;
+            border-radius: 50%;
+            min-width: 24px;
+            height: 24px;
+            padding: 0 6px;
+            font-size: 0.75rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid white;
+            font-weight: 700;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.3s;
+        }
+
+        .notification-badge.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1001;
+            backdrop-filter: blur(2px);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        .modal-content {
+            background-color: white;
+            width: 90%;
+            max-width: 480px;
+            max-height: 80vh;
+            border-radius: 1rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            display: flex;
+            flex-direction: column;
+            animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            padding: 1.25rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8fafc;
+        }
+
+        .modal-header h2 {
+            font-size: 1.1rem;
+            margin: 0;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .close-modal {
+            background: transparent;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--text-light);
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 50%;
+            transition: all 0.2s;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-modal:hover {
+            background-color: #e2e8f0;
+            color: var(--text);
+        }
+
+        /* Notifications List in Modal */
+        #notificationsList {
+            padding: 0;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .notification-item {
+            padding: 1.25rem;
+            border-bottom: 1px solid #f1f5f9;
+            transition: background 0.2s;
+            position: relative;
+        }
+        
+        .notification-item:last-child { border-bottom: none; }
+        .notification-item:hover { background-color: #f8fafc; }
+
+        .notif-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .notif-sender {
+            font-weight: 600;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .notif-time {
+            color: #94a3b8;
+            font-size: 0.75rem;
+        }
+
+        .notif-body {
+            color: var(--text);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand">
+            <i class="fas fa-graduation-cap"></i>
+            <span>Portal do Aluno</span>
+        </div>
+        <div class="user-nav">
+            <div class="user-info" id="userInfoContainer">
+                <span class="user-name">Aluno</span>
+                <span class="user-course">Carregando...</span>
+            </div>
+            <button onclick="logout()" class="btn-logout" title="Sair">
+                <i class="fas fa-sign-out-alt"></i>
+            </button>
+        </div>
+    </header>
+
+    <div class="container animate__animated animate__fadeIn">
+        
+        <div class="dashboard-grid" style="margin-top: 2rem; display: flex">
+            <!-- Atividades -->
+            <div class="content-card card-orange">
+                <div class="card-header">
+                    <i class="fas fa-tasks"></i>
+                    <h2>Atividades Recentes</h2>
+                </div>
+                <ul id="atividadesList" class="content-list">
+                    <li class="empty-list"><i class="fas fa-spinner fa-spin"></i> Carregando...</li>
+                </ul>
+            </div>
+
+            <!-- Provas -->
+            <div class="content-card card-purple">
+                <div class="card-header">
+                    <i class="fas fa-file-alt"></i>
+                    <h2>Próximas Provas</h2>
+                </div>
+                <ul id="provasList" class="content-list">
+                    <li class="empty-list"><i class="fas fa-spinner fa-spin"></i> Carregando...</li>
+                </ul>
+            </div>
+
+            <!-- Documentos -->
+            <div class="content-card card-green">
+                <div class="card-header">
+                    <i class="fas fa-folder-open"></i>
+                    <h2>Documentos</h2>
+                </div>
+                <ul id="documentosList" class="content-list">
+                    <li class="empty-list"><i class="fas fa-spinner fa-spin"></i> Carregando...</li>
+                </ul>
+            </div>
+
+            <!-- Video Aulas -->
+            <div class="content-card card-blue">
+                <div class="card-header">
+                    <i class="fas fa-video"></i>
+                    <h2>Vídeo Aulas</h2>
+                </div>
+                <ul id="aulasList" class="content-list">
+                    <li class="empty-list"><i class="fas fa-spinner fa-spin"></i> Carregando...</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Floating Action Button -->
+    <div class="fab animate__animated animate__bounceIn" id="openNotificationsBtn">
+        <i class="far fa-bell"></i>
+        <div class="notification-badge" id="notificationBadge">0</div>
+    </div>
+
+    <!-- Modal de Notificações -->
+    <div class="modal" id="notificationsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="far fa-bell"></i> Notificações</h2>
+                <button class="close-modal" id="closeNotificationsBtn"><i class="fas fa-times"></i></button>
+            </div>
+            <div id="notificationsList">
+                <div class="empty-list">Carregando mensagens...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'notifications';
+        const READ_COUNT_KEY = 'notifications_read_count';
+        
+        // Modal Logic
+        const modal = document.getElementById('notificationsModal');
+        const openBtn = document.getElementById('openNotificationsBtn');
+        const closeBtn = document.getElementById('closeNotificationsBtn');
+        const notificationsList = document.getElementById('notificationsList');
+        const notificationBadge = document.getElementById('notificationBadge');
+
+        // Helpers
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
+        // Display User Info
+        const studentName = decodeURIComponent(getCookie('name') || 'Aluno');
+        const studentCourse = decodeURIComponent(getCookie('course') || '');
+        
+        const container = document.getElementById('userInfoContainer');
+        if(studentName && studentName !== 'null' && studentName !== 'undefined') {
+            container.innerHTML = `
+                <span class="user-name">${studentName}</span>
+                <span class="user-course">${studentCourse}</span>
+            `;
+        } else {
+             container.innerHTML = `
+                <span class="user-name">Bem-vindo</span>
+                <span class="user-course">Aluno</span>
+            `;
+        }
+
+        function logout() {
+            document.cookie = "user=; path=/; max-age=0";
+            document.cookie = "name=; path=/; max-age=0";
+            document.cookie = "course=; path=/; max-age=0";
+            localStorage.removeItem(READ_COUNT_KEY);
+            window.location.href = '/login-client';
+        }
+
+        // Sounds
+        const audio = new Audio('/notificacao-som.mp3');
+
+        // Request Notification Permission
+        if (Notification.permission === 'default') {
+            Notification.requestPermission();
+        }
+
+        openBtn.addEventListener('click', () => {
+            modal.classList.add('active');
+            markAllAsRead();
+            fetchNotifications(); 
+        });
+
+        closeBtn.addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+
+        // Initial fetch logic
+        let currentMessages = [];
+        let unreadCount = 0;
+
+        async function fetchNotifications() {
+            try {
+                const response = await fetch(`/get-kv?key=${STORAGE_KEY}`);
+                
+                if (response.status === 404) {
+                    handleMessages([]);
+                    return;
+                }
+
+                if (!response.ok) {
+                    throw new Error('Falha ao buscar notificações');
+                }
+
+                const data = await response.json();
+                
+                let messages = [];
+                if (Array.isArray(data)) {
+                    messages = data;
+                } else if (typeof data === 'string') {
+                    try { messages = JSON.parse(data); } catch { messages = []; }
+                } else if (typeof data === 'object' && data !== null) {
+                    messages = Object.values(data); 
+                }
+
+                handleMessages(messages);
+
+            } catch (error) {
+                console.error('Erro:', error);
+                notificationsList.innerHTML = '<div class="empty-list">Erro ao carregar notificações.</div>';
+            }
+        }
+
+        function handleMessages(messages) {
+            currentMessages = messages;
+            
+            // Calculate Unread
+            const total = currentMessages.length;
+            const readCount = parseInt(localStorage.getItem(READ_COUNT_KEY) || '0');
+            
+            // If modal is NOT active, update badge
+            if (!modal.classList.contains('active')) {
+                unreadCount = Math.max(0, total - readCount);
+                updateBadge();
+            } else {
+                // If modal IS active, we are reading them now
+                markAllAsRead();
+            }
+
+            renderNotifications(currentMessages);
+        }
+
+        function updateBadge() {
+            if (unreadCount > 0) {
+                notificationBadge.textContent = unreadCount > 9 ? '9+' : unreadCount;
+                notificationBadge.classList.add('visible');
+            } else {
+                notificationBadge.classList.remove('visible');
+            }
+        }
+
+        function markAllAsRead() {
+            unreadCount = 0;
+            updateBadge();
+            localStorage.setItem(READ_COUNT_KEY, currentMessages.length.toString());
+        }
+
+        function notifyNewMessage(msg) {
+            // Sound
+            audio.play().catch(e => console.log("Audio preventDefault by browser"));
+
+            // Browser Notification
+            if (Notification.permission === 'granted') {
+                new Notification('Nova Mensagem da Faculdade', {
+                    body: msg.text,
+                    icon: '/favicon.ico'
+                });
+            }
+        }
+
+        // WebSocket
+        let socket;
+        function connectWebSocket() {
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${protocol}//${window.location.host}/connect-websocket`;
+            
+            socket = new WebSocket(wsUrl);
+
+            socket.onopen = () => {
+                console.log("WebSocket connected");
+            };
+
+            socket.onmessage = (event) => {
+                try {
+                    const newMessage = JSON.parse(event.data);
+                    currentMessages.push(newMessage);
+                    
+                    if (!modal.classList.contains('active')) {
+                        unreadCount++;
+                        updateBadge();
+                        notifyNewMessage(newMessage);
+                    } else {
+                        markAllAsRead();
+                    }
+                    renderNotifications(currentMessages);
+                } catch (e) {
+                    console.error("Error parsing WebSocket message", e);
+                }
+            };
+
+            socket.onclose = () => {
+                console.log("WebSocket disconnected. Reconnecting in 2s...");
+                setTimeout(connectWebSocket, 2000);
+            };
+            
+            socket.onerror = (err) => {
+                console.error("WebSocket error:", err);
+                socket.close();
+            }
+        }
+
+        connectWebSocket();
+        fetchNotifications();
+
+        function renderNotifications(messages) {
+            notificationsList.innerHTML = '';
+
+            if (!messages || messages.length === 0) {
+                notificationsList.innerHTML = '<div class="empty-list">Nenhuma notificação encontrada.</div>';
+                return;
+            }
+
+            const reversedMessages = [...messages].reverse();
+
+            reversedMessages.forEach(msg => {
+                const item = document.createElement('div');
+                item.className = 'notification-item animate__animated animate__fadeIn';
+                
+                const senderName = msg.senderName || 'Secretaria';
+                const senderRole = msg.senderRole ? `(${msg.senderRole})` : '';
+                const timeStr = `${msg.date} ${msg.time}`;
+                
+                item.innerHTML = `
+                    <div class="notif-header">
+                        <span class="notif-sender"><i class="fas fa-user-circle"></i> ${senderName} ${senderRole}</span>
+                        <span class="notif-time">${timeStr}</span>
+                    </div>
+                    <div class="notif-body">
+                        ${msg.text}
+                    </div>
+                `;
+                notificationsList.appendChild(item);
+            });
+        }
+
+        // --- New Content Loading Logic ---
+        async function loadContent(key, listId) {
+            const list = document.getElementById(listId);
+            try {
+                const res = await fetch(`/get-kv?key=${key}`);
+                if(res.status === 404) {
+                    list.innerHTML = '<li class="empty-list">Nenhum item.</li>';
+                    return;
+                }
+                let data = await res.json();
+                if(typeof data === 'string') data = JSON.parse(data);
+                
+                list.innerHTML = '';
+                if(!data || data.length === 0) {
+                    list.innerHTML = '<li class="empty-list">Nenhum item adicionado.</li>';
+                    return;
+                }
+
+                // Show newest first
+                [...data].reverse().forEach(item => {
+                    const li = document.createElement('li');
+                    li.className = 'content-item';
+
+                    // Format date
+                    let dateStr = '';
+                    if(item.date) {
+                        try {
+                           dateStr = new Date(item.date).toLocaleDateString('pt-BR');
+                        } catch(e){}
+                    }
+
+                    const authorStr = item.author ? (item.role ? `${item.author}` : item.author) : 'Gestão';
+                    const iconClass = listId === 'aulasList' ? 'fa-play-circle' : 'fa-file-alt';
+
+                    li.innerHTML = `
+                        <div class="item-title">
+                            <span><i class="far ${iconClass}" style="color:var(--primary); opacity:0.7; margin-right:5px; font-size:0.8em;"></i> ${item.title}</span>
+                            <span class="item-date">${dateStr}</span>
+                        </div>
+                        <div class="item-desc">${item.description}</div>
+                        <div class="item-meta">
+                            <i class="fas fa-user-edit" style="font-size: 0.7em;"></i> ${authorStr}
+                        </div>
+                    `;
+                    list.appendChild(li);
+                });
+
+            } catch(e) {
+                console.error(`Error loading ${key}`, e);
+                list.innerHTML = '<li class="empty-list" style="color:var(--danger)">Erro ao carregar.</li>';
+            }
+        }
+
+        function loadAllContent() {
+            loadContent('atividades', 'atividadesList');
+            loadContent('provas', 'provasList');
+            loadContent('documentos', 'documentosList');
+            loadContent('aulas', 'aulasList');
+        }
+
+        // Load on startup
+        loadAllContent();
+
+        // Refresh when tab gains focus
+        window.addEventListener('focus', () => {
+            loadAllContent();
+            fetchNotifications(); 
+        });
+
+    </script>
+</body>
+</html>

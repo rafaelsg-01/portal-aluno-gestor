@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro Gestor | Portal Institucional</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --surface: #ffffff;
+            --bg: #f3f4f6;
+            --text: #1f2937;
+            --text-light: #6b7280;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text);
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 420px;
+            padding: 2rem;
+        }
+
+        .card {
+            background: var(--surface);
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+        }
+
+        .brand {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .brand i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .brand h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .brand p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+            position: relative;
+        }
+
+        .form-group i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            transition: color 0.2s;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.875rem 1rem 0.875rem 2.75rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-control:focus + i {
+            color: var(--primary);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.875rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .auth-footer {
+            margin-top: 1.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .auth-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 1.5rem 0;
+            color: #9ca3af;
+            font-size: 0.8rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .divider:not(:empty)::before { margin-right: .5em; }
+        .divider:not(:empty)::after { margin-left: .5em; }
+
+    </style>
+</head>
+<body>
+
+    <div class="auth-container animate__animated animate__fadeInUp">
+        <div class="card">
+            <div class="brand">
+                <i class="fas fa-user-shield"></i>
+                <h2>Cadastro Gestor</h2>
+                <p>Crie sua conta administrativa</p>
+            </div>
+
+            <div class="form-group">
+                <i class="fas fa-user"></i>
+                <input type="text" class="form-control" id="name" placeholder="Nome Completo" required>
+            </div>
+
+            <div class="form-group">
+                <i class="fas fa-briefcase"></i>
+                <input type="text" class="form-control" id="role" placeholder="Cargo (Ex: Coordenador)" required>
+            </div>
+
+            <div class="form-group">
+                <i class="fas fa-id-badge"></i>
+                <input type="text" class="form-control" id="username" placeholder="Usuário de Acesso" required>
+            </div>
+
+            <div class="form-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" class="form-control" id="password" placeholder="Senha" required>
+            </div>
+
+            <div class="form-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirmar Senha" required>
+            </div>
+
+            <button class="btn" onclick="register()" id="registerBtn">
+                Cadastrar Acesso <i class="fas fa-arrow-right"></i>
+            </button>
+
+            <div class="divider">Já possui acesso?</div>
+
+            <div class="auth-footer">
+                <a href="/login-admin">Fazer Login como Gestor</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function register() {
+            const btn = document.getElementById('registerBtn');
+            const name = document.getElementById('name').value.trim();
+            const role = document.getElementById('role').value.trim();
+            const user = document.getElementById('username').value.trim();
+            const pass = document.getElementById('password').value;
+            const conf = document.getElementById('confirmPassword').value;
+
+            if (!name || !role || !user || !pass || !conf) return alert("Por favor, preencha todos os campos.");
+            if (pass !== conf) return alert("As senhas não conferem.");
+            if (pass.length < 4) return alert("A senha deve ter pelo menos 4 caracteres.");
+
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Cadastrando...';
+            btn.disabled = true;
+
+            try {
+                // Check if user exists
+                const check = await fetch(`/get-kv?key=user:admin:${user}`);
+                if (check.status === 200) {
+                    alert("Este nome de usuário já está em uso.");
+                    btn.innerHTML = 'Cadastrar Acesso <i class="fas fa-arrow-right"></i>';
+                    btn.disabled = false;
+                    return;
+                }
+
+                // Save user
+                const response = await fetch('/put-kv', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        key: `user:admin:${user}`,
+                        value: JSON.stringify({ name, role, password: pass })
+                    })
+                });
+
+                if (!response.ok) throw new Error("Erro ao salvar dados");
+
+                // Auto-login cookies
+                const expires = new Date();
+                expires.setTime(expires.getTime() + (7 * 24 * 60 * 60 * 1000)); // 7 days
+                const cookieOptions = `; expires=${expires.toUTCString()}; path=/`;
+                
+                document.cookie = `admin_user=${user}${cookieOptions}`;
+                document.cookie = `admin_name=${encodeURIComponent(name)}${cookieOptions}`;
+                document.cookie = `admin_role=${encodeURIComponent(role)}${cookieOptions}`;
+                
+                // Redirect
+                window.location.href = '/admin';
+
+            } catch (e) {
+                console.error(e);
+                alert("Ocorreu um erro ao processar o cadastro. Tente novamente.");
+                btn.innerHTML = 'Cadastrar Acesso <i class="fas fa-arrow-right"></i>';
+                btn.disabled = false;
+            }
+        }
+
+        // Allow Enter key to submit
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    register();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

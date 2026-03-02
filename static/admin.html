@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Administrativo</title>
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #64748b;
+            --success: #10b981;
+            --danger: #ef4444;
+            --bg: #f3f4f6;
+            --surface: #ffffff;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--surface);
+            padding: 0 2rem;
+            height: 70px;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+
+        .user-nav {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .user-avatar {
+            width: 350px;
+            height: 35px;
+            background: #eff6ff;
+            color: var(--primary);
+            border-radius: 0%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            gap: 10px;
+        }
+
+        .btn-logout {
+            background: transparent;
+            color: var(--text-light);
+            border: 1px solid #e5e7eb;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-logout:hover {
+            background-color: var(--bg);
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            width: 100%;
+        }
+
+        .section-header {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-header h2 {
+            font-size: 1.25rem;
+            color: var(--text);
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .section-header i { color: var(--primary); }
+
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        /* Action Cards */
+        .action-card {
+            background: var(--surface);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+            border-top: 4px solid var(--primary);
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .action-card h3 {
+            margin: 0 0 1rem 0;
+            font-size: 1.1rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .action-card p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            flex-grow: 1;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 0.6rem;
+            border: none;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: background-color 0.2s;
+            text-align: center;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background-color: #f1f5f9;
+            color: var(--text);
+        }
+
+        .btn-secondary:hover {
+            background-color: #e2e8f0;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1001;
+            backdrop-filter: blur(2px);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            position: relative;
+            animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1.25rem;
+            right: 1.25rem;
+            background: #f1f5f9;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: all 0.2s;
+        }
+
+        .close-modal:hover {
+            background: #e2e8f0;
+            color: var(--text);
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+        }
+
+        /* Form Elements */
+        textarea, input[type="text"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-family: inherit;
+            margin-bottom: 1rem;
+            outline: none;
+            font-size: 0.95rem;
+        }
+
+        textarea:focus, input[type="text"]:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        
+        textarea { height: 120px; resize: vertical; }
+
+        /* Lists */
+        .notification-list {
+            max-height: 50vh;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .notification-item {
+            border-left: 3px solid var(--primary);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background-color: #f8fafc;
+            border-radius: 0 0.5rem 0.5rem 0;
+            border-top: 1px solid #f1f5f9;
+            border-right: 1px solid #f1f5f9;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .notification-header {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            font-weight: 500;
+        }
+
+        .btn-block {
+            width: 100%;
+            padding: 0.875rem;
+            font-size: 1rem;
+        }
+
+        /* Loader */
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Specific Colors */
+        .color-blue { border-top-color: #3b82f6; }
+        .color-green { border-top-color: #10b981; }
+        .color-purple { border-top-color: #8b5cf6; }
+        .color-orange { border-top-color: #f59e0b; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand">
+            <i class="fas fa-university fa-lg"></i>
+            <span>Painel do Gestor</span>
+        </div>
+        <div class="user-nav">
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div style="display: flex; flex-direction: column;">
+                    <span style="font-weight: 600;">Admin User</span>
+                    <span style="font-size: 0.75rem; color: #94a3b8;">Gestão</span>
+                </div>
+            </div>
+            <button onclick="logout()" class="btn-logout">
+                <i class="fas fa-sign-out-alt"></i> Sair
+            </button>
+        </div>
+    </header>
+
+    <div class="container animate__animated animate__fadeIn">
+        
+        <!-- Section: Notificações -->
+        <div class="section-header">
+            <i class="far fa-bell"></i>
+            <h2>Comunicação e Notificações</h2>
+        </div>
+        
+        <div class="grid">
+            <div class="action-card color-blue" id="viewMessagesBtn">
+                <h3><i class="fas fa-history" style="color: #3b82f6;"></i> Histórico</h3>
+                <p>Visualize todas as mensagens e notificações enviadas anteriormente.</p>
+                <button class="btn btn-secondary">Ver Mensagens</button>
+            </div>
+            
+            <div class="action-card color-blue" id="sendMessageBtn">
+                <h3><i class="fas fa-paper-plane" style="color: #3b82f6;"></i> Nova Mensagem</h3>
+                <p>Envie uma nova notificação push para todos os alunos conectados.</p>
+                <button class="btn btn-primary">Enviar Mensagem</button>
+            </div>
+        </div>
+
+        <!-- Section: Conteúdo Acadêmico -->
+        <div class="section-header">
+            <i class="fas fa-graduation-cap"></i>
+            <h2>Conteúdo Acadêmico</h2>
+        </div>
+
+        <div class="grid">
+            <!-- Atividades -->
+            <div class="action-card color-orange" data-type="atividades">
+                <h3><i class="fas fa-tasks" style="color: #f59e0b;"></i> Atividades</h3>
+                <p>Gerencie tarefas e trabalhos para os alunos.</p>
+                <div class="card-actions">
+                    <button class="btn btn-primary" onclick="openContentModal('atividades', 'add')"><i class="fas fa-plus"></i> Add</button>
+                    <button class="btn btn-secondary" onclick="openContentModal('atividades', 'view')"><i class="fas fa-list"></i> Ver</button>
+                </div>
+            </div>
+
+            <!-- Provas -->
+            <div class="action-card color-purple" data-type="provas">
+                <h3><i class="fas fa-file-alt" style="color: #8b5cf6;"></i> Provas</h3>
+                <p>Agende e gerencie avaliações.</p>
+                <div class="card-actions">
+                    <button class="btn btn-primary" onclick="openContentModal('provas', 'add')"><i class="fas fa-plus"></i> Add</button>
+                    <button class="btn btn-secondary" onclick="openContentModal('provas', 'view')"><i class="fas fa-list"></i> Ver</button>
+                </div>
+            </div>
+
+            <!-- Documentos -->
+            <div class="action-card color-green" data-type="documentos">
+                <h3><i class="fas fa-folder-open" style="color: #10b981;"></i> Documentos</h3>
+                <p>Arquivos e materiais complementares.</p>
+                <div class="card-actions">
+                    <button class="btn btn-primary" onclick="openContentModal('documentos', 'add')"><i class="fas fa-plus"></i> Add</button>
+                    <button class="btn btn-secondary" onclick="openContentModal('documentos', 'view')"><i class="fas fa-list"></i> Ver</button>
+                </div>
+            </div>
+
+            <!-- Video Aulas -->
+            <div class="action-card color-blue" data-type="aulas">
+                <h3><i class="fas fa-video" style="color: #3b82f6;"></i> Vídeo Aulas</h3>
+                <p>Links para aulas gravadas e vídeos.</p>
+                <div class="card-actions">
+                    <button class="btn btn-primary" onclick="openContentModal('aulas', 'add')"><i class="fas fa-plus"></i> Add</button>
+                    <button class="btn btn-secondary" onclick="openContentModal('aulas', 'view')"><i class="fas fa-list"></i> Ver</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal View Messages -->
+    <div class="modal" id="viewModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeViewModal"><i class="fas fa-times"></i></span>
+            <div class="modal-title">Histórico de Mensagens</div>
+            <div id="messagesList" class="notification-list">
+                <!-- Messages will be injected here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Send Message -->
+    <div class="modal" id="sendModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeSendModal"><i class="fas fa-times"></i></span>
+            <div class="modal-title">Escrever Nova Mensagem</div>
+            <textarea id="messageText" placeholder="Digite sua mensagem para os alunos aqui..."></textarea>
+            <button class="btn btn-primary btn-block" id="confirmSendBtn"><i class="fas fa-paper-plane"></i> Enviar Agora</button>
+        </div>
+    </div>
+
+    <!-- Modal Content Management -->
+    <div class="modal" id="contentModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeContentModal"><i class="fas fa-times"></i></span>
+            <div class="modal-title" id="contentModalTitle">Gerenciar Conteúdo</div>
+            
+            <!-- Views -->
+            <div id="contentListView" style="display:none;">
+                <div id="contentList" class="notification-list"></div>
+            </div>
+
+            <div id="contentAddView" style="display:none;">
+                <input type="text" id="contentTitle" placeholder="Título do conteúdo">
+                <textarea id="contentDesc" placeholder="Descrição detalhada..." style="height: 100px;"></textarea>
+                <button id="saveContentBtn" class="btn btn-primary btn-block"><i class="fas fa-save"></i> Salvar Conteúdo</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'notifications';
+
+        // Admin Content Management Variables
+        let currentContentType = '';
+        const contentModal = document.getElementById('contentModal');
+        const contentModalTitle = document.getElementById('contentModalTitle');
+        const contentListView = document.getElementById('contentListView');
+        const contentAddView = document.getElementById('contentAddView');
+        const contentList = document.getElementById('contentList');
+        const contentTitleInput = document.getElementById('contentTitle');
+        const contentDescInput = document.getElementById('contentDesc');
+        const saveContentBtn = document.getElementById('saveContentBtn');
+        const closeContentModal = document.getElementById('closeContentModal');
+
+        closeContentModal.addEventListener('click', () => {
+            contentModal.classList.remove('active');
+        });
+
+        async function openContentModal(type, action) {
+            currentContentType = type;
+            contentModal.classList.add('active');
+            
+            const titles = {
+                'atividades': 'Atividades',
+                'provas': 'Provas',
+                'documentos': 'Documentos',
+                'aulas': 'Vídeo Aulas'
+            };
+
+            if (action === 'view') {
+                contentModalTitle.innerText = `Visualizar ${titles[type]}`;
+                contentListView.style.display = 'block';
+                contentAddView.style.display = 'none';
+                await loadContent(type);
+            } else {
+                contentModalTitle.innerText = `Adicionar ${titles[type]}`;
+                contentListView.style.display = 'none';
+                contentAddView.style.display = 'block';
+                contentTitleInput.value = '';
+                contentDescInput.value = '';
+            }
+        }
+
+        async function getContent(type) {
+            try {
+                const res = await fetch(`/get-kv?key=${type}`);
+                if (res.status === 404) return [];
+                const data = await res.json();
+                if (Array.isArray(data)) return data;
+                if (typeof data === 'string') return JSON.parse(data);
+                return [];
+            } catch { return []; }
+        }
+
+        async function loadContent(type) {
+            contentList.innerHTML = '<div class="loader"></div>';
+            const items = await getContent(type);
+            contentList.innerHTML = '';
+
+            if (items.length === 0) {
+                contentList.innerHTML = '<p style="text-align:center; color:#888; padding: 1rem;">Nenhum item cadastrado.</p>';
+                return;
+            }
+
+            // Newest first
+            [...items].reverse().forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'notification-item';
+                div.innerHTML = `
+                    <strong>${item.title}</strong>
+                    <div style="font-size: 0.9rem; margin-top: 5px; color: #4b5563;">${item.description}</div>
+                    <div style="font-size: 0.75rem; color: #9ca3af; margin-top: 8px;"><i class="fas fa-user-edit"></i> ${item.author}</div>
+                `;
+                contentList.appendChild(div);
+            });
+        }
+
+        saveContentBtn.addEventListener('click', async () => {
+            const title = contentTitleInput.value.trim();
+            const desc = contentDescInput.value.trim();
+            if (!title) return alert("Título obrigatório");
+
+            saveContentBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
+            saveContentBtn.disabled = true;
+
+            const items = await getContent(currentContentType);
+            items.push({
+                title,
+                description: desc,
+                author: getCookie('admin_name') || 'Admin',
+                role: getCookie('admin_role') || 'Gestão',
+                date: new Date().toISOString()
+            });
+
+            await fetch('/put-kv', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    key: currentContentType,
+                    value: JSON.stringify(items)
+                })
+            });
+
+            alert("Salvo!");
+            contentModal.classList.remove('active');
+            saveContentBtn.innerHTML = '<i class="fas fa-save"></i> Salvar Conteúdo';
+            saveContentBtn.disabled = false;
+        });
+
+        // Elements
+        const viewMessagesBtn = document.getElementById('viewMessagesBtn');
+        const sendMessageBtn = document.getElementById('sendMessageBtn');
+        const viewModal = document.getElementById('viewModal');
+        const sendModal = document.getElementById('sendModal');
+        const closeViewModal = document.getElementById('closeViewModal');
+        const closeSendModal = document.getElementById('closeSendModal');
+        const confirmSendBtn = document.getElementById('confirmSendBtn');
+        const messageText = document.getElementById('messageText');
+        const messagesList = document.getElementById('messagesList');
+
+        // WebSocket Logic
+        let socket;
+        function connectWebSocket() {
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${protocol}//${window.location.host}/connect-websocket`;
+
+            socket = new WebSocket(wsUrl);
+
+            socket.onopen = () => {
+                console.log("WebSocket connected");
+            };
+
+            socket.onclose = () => {
+                console.log("WebSocket disconnected. Reconnecting in 2s...");
+                setTimeout(connectWebSocket, 2000);
+            };
+
+            socket.onerror = (err) => {
+                console.error("WebSocket error:", err);
+                socket.close();
+            };
+        }
+
+        // Initialize connection
+        connectWebSocket();
+
+        // Helpers
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
+        // Display Admin Name
+        const adminName = getCookie('admin_name');
+        const adminRole = getCookie('admin_role');
+        if(adminName) {
+            const headerInfo = document.querySelector('header .user-info div');
+            headerInfo.innerHTML = `<span style="font-weight: 600;">${decodeURIComponent(adminName)}</span>
+                                    <span style="font-size: 0.75rem; color: #94a3b8;">${decodeURIComponent(adminRole)}</span>`;
+        }
+
+        // Logout
+        function logout() {
+            document.cookie = "admin_user=; path=/; max-age=0";
+            document.cookie = "admin_name=; path=/; max-age=0";
+            document.cookie = "admin_role=; path=/; max-age=0";
+            window.location.href = '/login-admin';
+        }
+
+        function showModal(modal) {
+            modal.classList.add('active');
+        }
+        function hideModal(modal) {
+            modal.classList.remove('active');
+        }
+
+        // Event Listeners
+        viewMessagesBtn.addEventListener('click', () => {
+            showModal(viewModal);
+            fetchAndRenderMessages();
+        });
+
+        sendMessageBtn.addEventListener('click', () => {
+            showModal(sendModal);
+        });
+
+        closeViewModal.addEventListener('click', () => hideModal(viewModal));
+        closeSendModal.addEventListener('click', () => hideModal(sendModal));
+        
+        // Close on click outside
+        window.addEventListener('click', (e) => {
+            if (e.target === viewModal) hideModal(viewModal);
+            if (e.target === sendModal) hideModal(sendModal);
+        });
+
+        // Fetch Messages
+        async function fetchMessages() {
+            try {
+                const response = await fetch(`/get-kv?key=${STORAGE_KEY}`);
+                if (response.status === 404) return [];
+                const data = await response.json();
+                
+                // Ensure data is array
+                if (Array.isArray(data)) return data;
+                if (typeof data === 'string') return JSON.parse(data);
+                return []; // fallback
+
+            } catch (e) {
+                console.error("Error fetching messages:", e);
+                return [];
+            }
+        }
+
+        // Save Messages (Override the whole list)
+        async function saveMessages(messages) {
+            try {
+                const response = await fetch('/put-kv', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        key: STORAGE_KEY,
+                        value: JSON.stringify(messages)
+                    })
+                });
+
+                if (!response.ok) throw new Error("Failed to save");
+                return true;
+            } catch (e) {
+                console.error("Error saving messages:", e);
+                return false;
+            }
+        }
+
+        // Render in View Modal
+        async function fetchAndRenderMessages() {
+            messagesList.innerHTML = '<div class="loader"></div>';
+            const messages = await fetchMessages();
+            messagesList.innerHTML = '';
+
+            if (messages.length === 0) {
+                messagesList.innerHTML = '<p style="text-align:center; color:#888;">Nenhuma mensagem enviada ainda.</p>';
+                return;
+            }
+
+            // Show newest first
+            const reversed = [...messages].reverse();
+
+            reversed.forEach(msg => {
+                const div = document.createElement('div');
+                div.className = 'notification-item';
+                div.innerHTML = `
+                    <div class="notification-header">
+                        <strong><i class="fas fa-user-circle"></i> ${msg.senderName || 'Gestor'} (${msg.senderRole || 'Admin'})</strong>
+                        <span>${msg.date} ${msg.time}</span>
+                    </div>
+                    <div>${msg.text}</div>
+                `;
+                messagesList.appendChild(div);
+            });
+        }
+
+        // Send Message Logic
+        confirmSendBtn.addEventListener('click', async () => {
+            const text = messageText.value.trim();
+            if (!text) {
+                alert("Por favor, escreva uma mensagem.");
+                return;
+            }
+
+            // Simple loading state
+            confirmSendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+            confirmSendBtn.disabled = true;
+
+            // 1. Get current messages
+            const currentMessages = await fetchMessages();
+
+            // 2. Add new message
+            const now = new Date();
+            const newMessage = {
+                date: now.toLocaleDateString('pt-BR'),
+                time: now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+                text: text,
+                senderName: getCookie('admin_name') || 'Gestor',
+                senderRole: getCookie('admin_role') || 'Admin'
+            };
+
+            currentMessages.push(newMessage);
+
+            // 3. Save new list
+            const success = await saveMessages(currentMessages);
+
+            if (success) {
+                // 4. Broadcast via WebSocket
+                if (socket && socket.readyState === WebSocket.OPEN) {
+                    socket.send(JSON.stringify(newMessage));
+                }
+
+                alert("Mensagem enviada com sucesso!");
+                messageText.value = '';
+                hideModal(sendModal);
+            } else {
+                alert("Erro ao enviar mensagem. Tente novamente.");
+            }
+
+            confirmSendBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar Agora';
+            confirmSendBtn.disabled = false;
+        });
+
+    </script>
+</body>
+</html>
