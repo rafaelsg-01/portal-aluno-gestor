@@ -7,7 +7,7 @@ import Html_loginAdmin from '../static/login-admin.html'
 import Html_registerAdmin from '../static/register-admin.html'
 import Html_landing from '../static/landing.html'
 import { Type_envData } from './types'
-export { Class_WebsocketNotificacaoTest } from './Class_WebsocketPortalAlunoGestor'
+export { Class_WebsocketPortalAlunoGestor } from './Class_WebsocketPortalAlunoGestor'
 
 
 export default {

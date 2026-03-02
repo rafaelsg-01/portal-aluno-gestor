@@ -4,7 +4,7 @@ import { Type_envData } from "./types";
 
 
 // Durable Object
-export class Class_WebsocketNotificacaoTest extends DurableObject {
+export class Class_WebsocketPortalAlunoGestor extends DurableObject {
   constructor(ctx: DurableObjectState, env: Type_envData) {
     super(ctx, env);
     // Mantém a conexão viva com pings automáticos
