@@ -4,7 +4,7 @@
   "description": "IPTV Self - Cloudflare Worker",
   "main": "src/index.ts",
   "scripts": {
-    "dev": "wrangler dev --port=8788 --env=dev",
+    "dev": "wrangler dev --port=8787 --env=dev",
     "deploy": "wrangler deploy",
     "start": "wrangler dev"
   },

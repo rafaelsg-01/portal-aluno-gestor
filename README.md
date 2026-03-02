@@ -85,7 +85,7 @@ Para rodar este projeto em sua máquina, você precisará do `Node.js` e do **Wr
 
 3. **Inicie o servidor de desenvolvimento**
    ```bash
-   npx wrangler dev
+   npm run dev
    ```
 
 4. Acesse `http://localhost:8787` em seu navegador.
